@@ -1,5 +1,5 @@
 // App.jsx
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import CreatePoll from './CreatePoll';
@@ -19,7 +19,7 @@ function App() {
         <Link to="/create">Create Poll</Link> |{" "}
         <Link to="/vote/07fd4b68-114c-4469-ad19-efd4c9747d78">Vote</Link>
       </nav>
-      
+  
       <Routes>
         <Route path="/create" element={<CreatePoll />} />
         <Route path="/vote/:pollId" element={<PollVote />} />
