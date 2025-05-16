@@ -44,17 +44,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: backend
-        run: npm ci 
-
-      - name: Install PostgreSQL client
-        run: sudo apt-get update && sudo apt-get install -y postgresql-client
-
-      - name: Wait for Postgres to be ready
-        run: |
-          until pg_isready -h postgres -p 5432 -U postgres; do
-            echo "Waiting for Postgres..."
-            sleep 1
-          done
+        run: npm ci
 
       - name: Run tests
         working-directory: backend
