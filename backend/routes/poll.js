@@ -125,7 +125,7 @@ router.get("/:id", async (req, res) => {
       options: poll.rows[0].options,
       votes,
     });
-  } catch (err) {
+  } catch (err) { 
     console.error("Fetch poll error:", err);
     res.status(500).json({ error: "Failed to fetch poll" });
   }
