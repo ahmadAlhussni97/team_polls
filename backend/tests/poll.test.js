@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../indexupdate'); // your Express app export
+const app = require('../index'); // your Express app export
 
 describe('Poll API', () => {
   let token;  // Store JWT token for authenticated routes
