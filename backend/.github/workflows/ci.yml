@@ -43,9 +43,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: |
-          echo "Installing dependencies..."
-          npm install
+        run: npm ci
 
       - name: Run tests
         run: npm test
