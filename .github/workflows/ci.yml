@@ -46,6 +46,13 @@ jobs:
         working-directory: backend
         run: npm ci
 
+      - name: Wait for Postgres to be ready
+        run: |
+          until pg_isready -h postgres -p 5432 -U postgres; do
+            echo "Waiting for Postgres..."
+            sleep 1
+          done
+
       - name: Run tests
         working-directory: backend
         run: npm test
