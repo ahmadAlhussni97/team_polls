@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: Polls API
+  version: 1.0.0
+  description: API for creating polls, voting, and retrieving results.
+
+paths:
+  /anon:
+    post:
+      summary: Generate anonymous JWT token
+      description: Returns a JWT for anonymous voting access.
+      responses:
+        200:
+          description: Token generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        500:
+          description: Failed to generate token
+
+  /:
+    post:
+      summary: Create a new poll
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - question
+                - options
+                - expiresAt
+              properties:
+                question:
+                  type: string
+                  example: "What's your favorite color?"
+                options:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 2
+                  example: ["Red", "Blue"]
+                expiresAt:
+                  type: string
+                  format: date-time
+                  example: "2025-06-01T12:00:00Z"
+      responses:
+        201:
+          description: Poll created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+        400:
+          description: Invalid input
+        500:
+          description: Failed to create poll
+
+  /{id}/vote:
+    post:
+      summary: Vote on a poll
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - option
+              properties:
+                option:
+                  type: string
+                  example: "Red"
+      responses:
+        200:
+          description: Vote successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        400:
+          description: Invalid option
+        404:
+          description: Poll not found or expired
+        500:
+          description: Failed to vote
+
+  /{id}:
+    get:
+      summary: Get poll details
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Poll data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 123
+                  question:
+                    type: string
+                    example: "What's your favorite color?"
+                  options:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Red", "Blue"]
+                  votes:
+                    type: object
+                    additionalProperties:
+                      type: integer
+                    example: { "Red": 5, "Blue": 3 }
+        404:
+          description: Poll not found
+        500:
+          description: Failed to fetch poll
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
