@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
   socket.on('join', (pollId) => {
     console.log(`Socket ${socket.id} joining room poll/${pollId}`);
     socket.join(`poll/${pollId}`);
-  });
+  }); 
 
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
